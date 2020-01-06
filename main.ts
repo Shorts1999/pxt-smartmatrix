@@ -112,7 +112,7 @@ namespace SmartMatrix {
     }
 
 
-    let Font8x6 = [
+    let Font8x6:number[] = [
         /**
          * code=0, hex=0x00, ascii="^@"
          */

@@ -1,5 +1,5 @@
 {
-    "name": "ptx-smartmatrix",
+    "name": "pxt-smartmatrix",
     "version": "0.0.0",
     "description": "",
     "dependencies": {
@@ -15,5 +15,6 @@
         "test.ts"
     ],
     "public": false,
-    "preferredEditor": "tsprj"
+    "preferredEditor": "tsprj",
+    "installedVersion": "workspace:fa41ae1f-d4c0-40f6-ea12-66739ef8a06b"
 }
