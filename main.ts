@@ -112,7 +112,7 @@ namespace SmartMatrix {
     }
 
 
-    let Font8x6:number[] = [
+    let Font8x6: number[] = [
         /**
          * code=0, hex=0x00, ascii="^@"
          */
@@ -1652,7 +1652,7 @@ namespace SmartMatrix {
         let offset = 65;//char.charCodeAt(0); //Convert the ASCII-Character to it's code to generate the offset in the font-array
 
         for (let i = 0; i < 8; i++) {
-            bitmap[i] = Font8x6[i]; //Every character has 8 arguments in the array, so multiply the offset by 8, and then take ne next 8 arguments as the value for the correct bitmap.
+            bitmap[i] = 0xff && Font8x6[i]; //Every character has 8 arguments in the array, so multiply the offset by 8, and then take ne next 8 arguments as the value for the correct bitmap.
         }
         return bitmap;
     }
