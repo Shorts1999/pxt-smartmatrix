@@ -112,17 +112,17 @@ namespace SmartMatrix {
     //Take in a string-character and return a bitmap to draw on the display
     export function getLettermap(char: string): number[] {
         let letterMap: number[] = [0, 0, 0, 0, 0, 0, 0, 0]
-        let offset = ((char.charCodeAt(0)) - 32); //Convert the ASCII-Character to it's code to generate the offset in the font-array
+        let offset = ((char.charCodeAt(1)) - 32); //Convert the ASCII-Character to it's code to generate the offset in the font-array
         if (offset >= 0) {
             for (let i = 0; i < 8; i++) {
                 //Every character has 8 arguments in the array, so multiply the offset by 8, and then take ne next 8 arguments as the value for the correct bitmap.
-                letterMap[i] = font.getNumber(NumberFormat.UInt8BE, (offset * 8 + i))
+                letterMap[i] = font8x3.getNumber(NumberFormat.UInt8BE, ((offset * 8) + i))
             }
         }
         return letterMap;
     }
 }
-let font = hex`
+const font8x3 = hex`
     0000000000000000 1038381010001000 6C6C480000000000 00287C28287C2800
     2038403008701000 64640810204C4C00 2050502054483400 3030200000000000
     1020202020201000 2010101010102000 0028387C38280000 0010107C10100000
