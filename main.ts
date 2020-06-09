@@ -21,7 +21,7 @@ namespace SmartMatrix {
     export class Matrix {
         strip: neopixel.Strip
         Width: number
-        Heigth: number
+        Height: number
 
         //%blockId="Matrix_show" block="%matrix| show"
         //%weight=90 group="Tools"
@@ -44,9 +44,9 @@ namespace SmartMatrix {
         //%weight=80 group="PixelControl"
         //%colour.shadow=neopixel_colors
         setPixel(x: number, y: number, colour: number): void {
-            if (x < 0 || x > this.Width || y < 0 || y > this.Heigth) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
-            if (!(x % 2)) { this.strip.setPixelColor(y + x * this.Heigth, colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
-            else { this.strip.setPixelColor(this.Heigth - y + x * this.Heigth, colour); } //While all odd rows are drawn bottom to top
+            if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
+            if (!(x % 2)) { this.strip.setPixelColor(y + x * this.Height, colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
+            else { this.strip.setPixelColor(this.Height - y + x * this.Height, colour); } //While all odd rows are drawn bottom to top
         }
         /**
          * scroll text on the matrix
@@ -60,29 +60,29 @@ namespace SmartMatrix {
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
                 for (let letter = 0; letter < text.length; letter++) {//for loop to retrieve all the letters from te text
                     let bitmap = getLettermap(text.charAt(letter))
-                    this.drawBitmap(bitmap, Xpos, 0, 6, 8, colour)
+                    this.drawBitmap(bitmap, Xpos + (6 * letter), 0, 6, 8, colour)
                 }
+                this.strip.show();
+                basic.pause(2000 / speed);
+                this.strip.clear();
             }
-            this.strip.show();
-            basic.pause(2000 / speed);
-            this.strip.clear();
         }
-        //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width heigth %heigth in colour %colour"
-        //%weigth=70 group="PixelControl"
+        //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
+        //%weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
-        drawBitmap(bitmap: number[], x: number, y: number, width: number, heigth: number, colour: number): void {
-            for (let bitmask = 0; bitmask < 6; bitmask++) { //for loop to bitmask the 6 "pixels" in every letter of the 8x6 font.
+        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number): void {
+            for (let bitmask = 0; bitmask < width; bitmask++) {
                 if (!((x + bitmask) % 2)) {//Zigzag pixel string: if the row that's being drawn to (Xpos+bitmask) is odd, then draw from bottom to top
-                    for (let Ypos = this.Heigth - 1; Ypos >= 0; Ypos--) {
+                    for (let Ypos = height; Ypos >= 0; Ypos--) {
                         if (bitmap[Ypos] & (0x80 >> bitmask)) { //draw the pixel when there is a "1" in the bitmap
-                            this.strip.setPixelColor(((x + bitmask) * this.Heigth) + Ypos + ((this.Heigth - 8) / 2), colour)
+                            this.strip.setPixelColor(((x + bitmask) * this.Height) + Ypos + ((this.Height - 8) / 2), colour)
                         }
                     }
                 }
                 else {//else draw from top to bottom
-                    for (let Ypos = 0; Ypos < this.Heigth; Ypos++) {
+                    for (let Ypos = 0; Ypos < this.Height; Ypos++) {
                         if (bitmap[7 - Ypos] & (0x80 >> bitmask)) {
-                            this.strip.setPixelColor(((x + bitmask) * this.Heigth + Ypos + ((this.Heigth - 8) / 2)), colour)
+                            this.strip.setPixelColor(((x + bitmask) * this.Height + Ypos + ((this.Height - 8) / 2)), colour)
                         }
                     }
                 }
@@ -94,25 +94,25 @@ namespace SmartMatrix {
      * Create a new matrix object
      * @param pin the pin to which the matrix is connected
      * @param matrixWidth the amount of leds horizontally
-     * @param matrixHeigth the amount of leds vertically
+     * @param matrixheight the amount of leds vertically
      */
-    //%blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|heigth of %matrixHeigth| and with %mode pixeltype"
+    //%blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
     //%weight=100 blockGap=8 group="Setup"
     //%parts="SmartMatrix"
-    //%matrixWidth.defl=32 matrixHeigth.defl=8
+    //%matrixWidth.defl=32 matrixheight.defl=8
     //%blockSetVariable=matrix
-    export function create(pin: DigitalPin, matrixWidth: number, matrixHeigth: number, mode: NeoPixelMode): Matrix {
+    export function create(pin: DigitalPin, matrixWidth: number, matrixheight: number, mode: NeoPixelMode): Matrix {
         let matrix = new Matrix;
-        matrix.strip = neopixel.create(pin, matrixHeigth * matrixWidth, mode);
+        matrix.strip = neopixel.create(pin, matrixheight * matrixWidth, mode);
         matrix.Width = matrixWidth;
-        matrix.Heigth = matrixHeigth;
+        matrix.Height = matrixheight;
 
         return matrix;
     }
     //Take in a string-character and return a bitmap to draw on the display
     export function getLettermap(char: string): number[] {
         let letterMap: number[] = [0, 0, 0, 0, 0, 0, 0, 0]
-        let offset = ((char.charCodeAt(1)) - 32); //Convert the ASCII-Character to it's code to generate the offset in the font-array
+        let offset = ((char.charCodeAt(0)) - 32); //Convert the ASCII-Character to it's code to generate the offset in the font-array
         if (offset >= 0) {
             for (let i = 0; i < 8; i++) {
                 //Every character has 8 arguments in the array, so multiply the offset by 8, and then take ne next 8 arguments as the value for the correct bitmap.
