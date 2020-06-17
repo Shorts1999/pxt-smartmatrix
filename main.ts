@@ -101,11 +101,11 @@ namespace SmartMatrix {
     //%parts="SmartMatrix"
     //%matrixWidth.defl=32 matrixheight.defl=8
     //%blockSetVariable=matrix
-    export function create(pin: DigitalPin, matrixWidth: number, matrixheight: number, mode: NeoPixelMode): Matrix {
+    export function create(pin: DigitalPin, matrixWidth: number, matrixHeight: number, mode: NeoPixelMode): Matrix {
         let matrix = new Matrix;
-        matrix.strip = neopixel.create(pin, matrixheight * matrixWidth, mode);
+        matrix.strip = neopixel.create(pin, matrixHeight * matrixWidth, mode);
         matrix.Width = matrixWidth;
-        matrix.Height = matrixheight;
+        matrix.Height = matrixHeight;
 
         return matrix;
     }
