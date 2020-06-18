@@ -55,12 +55,12 @@ namespace SmartMatrix {
         //%weight=75 group="PixelControl"
         //%colour.shadow=neopixel_colors
         //%speed.min=1 speed.max=1024 speed.defl=512
-        scrollText(text: string, speed: number, colour: number): void {
+        scrollText(text: string, speed: number, yoffset:number, colour: number): void {
             this.strip.clear();
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
                 for (let letter = 0; letter < text.length; letter++) {//for loop to retrieve all the letters from te text
                     let bitmap = getLettermap(text.charAt(letter))
-                    this.drawBitmap(bitmap, Xpos + (6 * letter), 0, 7, 8, colour)
+                    this.drawBitmap(bitmap, Xpos + (6 * letter), yoffset, 7, 8, colour)
                 }
                 this.strip.show();
                 basic.pause(2000 / speed);
