@@ -51,7 +51,7 @@ namespace SmartMatrix {
         /**
          * scroll text on the matrix
          */
-        //%blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| and colour %colour"
+        //%blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
         //%weight=75 group="PixelControl"
         //%colour.shadow=neopixel_colors
         //%speed.min=1 speed.max=1024 speed.defl=512
