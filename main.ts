@@ -45,8 +45,8 @@ namespace SmartMatrix {
         //%colour.shadow=neopixel_colors
         setPixel(x: number, y: number, colour: number): void {
             if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
-            if (!(x % 2)) { this.strip.setPixelColor(y + x * this.Height, colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
-            else { this.strip.setPixelColor(this.Height - y + x * this.Height, colour); } //While all odd rows are drawn bottom to top
+            if (!(x % 2)) { this.strip.setPixelColor(y + (x * this.Height), colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
+            else { this.strip.setPixelColor((this.Height - y-1) + (x * this.Height), colour); } //While all odd rows are drawn bottom to top
         }
         /**
          * scroll text on the matrix
@@ -60,7 +60,7 @@ namespace SmartMatrix {
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
                 for (let letter = 0; letter < text.length; letter++) {//for loop to retrieve all the letters from te text
                     let bitmap = getLettermap(text.charAt(letter))
-                    this.drawBitmap(bitmap, Xpos + (6 * letter), 0, 6, 8, colour)
+                    this.drawBitmap(bitmap, Xpos + (6 * letter), 0, 7, 8, colour)
                 }
                 this.strip.show();
                 basic.pause(2000 / speed);
@@ -82,7 +82,7 @@ namespace SmartMatrix {
                     }
                 }
         }
-        /*
+        /* OLD VERSION
         //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
         //%weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
@@ -104,40 +104,6 @@ namespace SmartMatrix {
                 }
             }
         }*/
-        //%blockId="Matrix_drawBitmap2" block="%matrix draw bitmap %bitmap at x %xoffset y %yoffset| with width %width height %height in colour %colour"
-        //%weight=70 group="PixelControl"
-        //% colour.shadow=neopixel.colors
-        drawBitmap2(bitmap: number[],xoffset: number, yoffset: number, width: number, height: number, colour: number, doMirror: boolean = false): void {
-        let mirrored = 0
-        if (doMirror) {
-            mirrored = 1
-        }
-        if (width % 2) { //To properly enable mirror, width has to be even, so if uneven width gets added to by 1
-            width++
-        }
-        //Setting end value of k to equal the width of the image to shift the bitmask to the correct position. for drawing the x-axis
-        for (let k = 0; k < width; k++) {
-            //Due to the zig-zag pattern of the matrix every odd value on the matrix has to be drawn from bottom to top, and the others top to bottom.
-            if (!((xoffset + k + mirrored) % 2)) {
-                //Value of j to select the values in the array to draw on the y-axis
-                for (let j = 0; j < height; j++) {
-                    //only draw a pixel when there is a '1' in the bitmap, without drawing a "black" pixel when there is a '0', allowing layering of bitmaps.
-                    if ((bitmap[j] & (0b1 << (width - k - 1))) && ((j + yoffset) < this.Height) && ((yoffset + j) >= 0)) {
-                        //Draw the actual pixel at the position determined by the k, j , xoffset and yoffset values.
-                        this.strip.setPixelColor((((((mirrored - 1) * (-k) + xoffset) + ((width - k - 1) * mirrored)) * this.Height) + j + yoffset), colour)
-                    }
-                }
-            }
-            //Drawing the odd lines top to bottom.
-            else {
-                for (let j = 0; j < height; j++) {
-                    if ((bitmap[j] & (0b1 << (width - k - 1))) && ((yoffset + j) < this.Height) && ((yoffset + j) >= 0)) {
-                        this.strip.setPixelColor((((((mirrored - 1) * (-k) + xoffset) + ((width - k - 1) * mirrored)) * this.Height) + (this.Height - j - yoffset - 1)), colour)
-                    }
-                }
-            }
-        }
-    }
     }
 
     /**
