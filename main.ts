@@ -67,6 +67,22 @@ namespace SmartMatrix {
                 this.strip.clear();
             }
         }
+                //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
+        //%weight=70 group="PixelControl"
+        //% colour.shadow=neopixel.colors
+        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:number=1): void {
+            for(let Ypos=0; Ypos<height; Ypos++){
+                 for(let bitmask=0; bitmask<width; bitmask++){
+                     if(bitmap[Ypos] & 0x0001<<bitmask){
+                        if(direction){ 
+                           this.setPixel(x+width-bitmask, y+Ypos, colour)
+                        }
+                        else this.setPixel(x+bitmask, y+Ypos, colour)
+                     }
+                    }
+                }
+        }
+        /*
         //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
         //%weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
@@ -87,7 +103,7 @@ namespace SmartMatrix {
                     }
                 }
             }
-        }
+        }*/
         //%blockId="Matrix_drawBitmap2" block="%matrix draw bitmap %bitmap at x %xoffset y %yoffset| with width %width height %height in colour %colour"
         //%weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
