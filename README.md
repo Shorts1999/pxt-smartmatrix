@@ -5,6 +5,20 @@
 This extensions allows you to easily control LED matrices/displays made from ws2812b/NeoPixel controllable RGB LEDs
 There are a multitude of added cuntions, like drawing pixels in a x/y coördinante system, scrolling text over the display and drawing monochrome images.
 
+IMPORTANT NOTE:
+the extension only works with matrices made in a "column-zigzag pattern" meaning the matrix is made of strips in a zig-zag pattern going up and down.
+So the order of the pixels will be like this:
+0 8 16 24 32 40 48 56
+1 9 17 25 33 41 49 57
+2 10 18 26 34 42 50 58
+3 11 19 .. .. .. .. ..
+4 .. .. .. .. .. .. ..
+5 .. .. .. .. .. .. ..
+6 .. .. .. .. .. .. ..
+7 .. .. .. .. .. .. 63
+etc.
+The display can be any size you like, as long as the strips are laid out with this pattern in mind.
+
 Current features and functions:
 
 create (SmartMatrix.create). Create the matrix object, just like how you normally would create a normal neopixel strip.
@@ -23,6 +37,9 @@ draw Bitmap (matrix.drawBitmap(bitmap, x offset, y offset, width, height, colour
 This function allows for drawing a monochrome bitmap on the display. it can be placed anywhere using the xoffset and yoffse. With direction you can either draw the bitmap normally or mirrored on the Y-axis.
 
 Scroll Text (matrix.scrollText(text, speed, Y offset, colour) allows you to scroll a string of text across the matrix. this uses a 6x8 font, so every letter is 8 pixels tall and six pixels wide. the speed variable determines how fast it scrolls across the screen and the Y offset places it up or down on the screen.
+
+To be added soon:
+Drawing graphics primitives like lines, squares and circles
 
 ## TODO
 
