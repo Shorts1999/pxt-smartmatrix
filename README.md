@@ -6,18 +6,7 @@ This extensions allows you to easily control LED matrices/displays made from ws2
 There are a multitude of added cuntions, like drawing pixels in a x/y coördinante system, scrolling text over the display and drawing monochrome images.
 
 IMPORTANT NOTE:
-the extension only works with matrices made in a "column-zigzag pattern" meaning the matrix is made of strips in a zig-zag pattern going up and down.
-So the order of the pixels will be like this:
-0 8 16 24 32 40 48 56
-1 9 17 25 33 41 49 57
-2 10 18 26 34 42 50 58
-3 11 19 .. .. .. .. ..
-4 .. .. .. .. .. .. ..
-5 .. .. .. .. .. .. ..
-6 .. .. .. .. .. .. ..
-7 .. .. .. .. .. .. 63
-etc.
-
+The extension only works with matrices made in a "column-zigzag pattern" meaning the matrix is made of strips in a zig-zag pattern going up and down.
 The display can be any size you like, as long as the strips are laid out with this pattern in mind.
 
 Current features and functions:
