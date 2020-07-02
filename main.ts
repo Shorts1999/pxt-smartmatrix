@@ -115,7 +115,7 @@ namespace SmartMatrix {
     //%blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
     //%weight=100 blockGap=8 group="Setup"
     //%parts="SmartMatrix"
-    //%matrixWidth.defl=32 matrixheight.defl=8
+    //%matrixWidth.defl=32 matrixHeight.defl=8
     //%blockSetVariable=matrix
     export function create(pin: DigitalPin, matrixWidth: number, matrixHeight: number, mode: NeoPixelMode): Matrix {
         let matrix = new Matrix;
