@@ -50,6 +50,10 @@ namespace SmartMatrix {
         }
         /**
          * scroll text on the matrix
+         * @param text the text to scroll 
+         * @param speed how fast the text should scroll
+         * @param yoffset the y position for the text
+         * @param colour the colour in which the text will be displayed
          */
         //%blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
         //%weight=75 group="PixelControl"
@@ -110,7 +114,8 @@ namespace SmartMatrix {
      * Create a new matrix object
      * @param pin the pin to which the matrix is connected
      * @param matrixWidth the amount of leds horizontally
-     * @param matrixheight the amount of leds vertically
+     * @param matrixHeight the amount of leds vertically
+     * @param mode the format/type of the LED
      */
     //%blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
     //%weight=100 blockGap=8 group="Setup"
