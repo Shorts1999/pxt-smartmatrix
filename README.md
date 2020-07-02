@@ -17,6 +17,7 @@ So the order of the pixels will be like this:
 6 .. .. .. .. .. .. ..
 7 .. .. .. .. .. .. 63
 etc.
+
 The display can be any size you like, as long as the strips are laid out with this pattern in mind.
 
 Current features and functions:
