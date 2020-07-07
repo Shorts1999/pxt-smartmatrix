@@ -12,6 +12,13 @@
 //                                              //
 //**********************************************//
 
+enum drawDirection{
+    //% block=Normal
+    normal=1,
+    //% block=Mirrored
+    mirrored=0
+}
+
 //% weight=6 color=#00CC60 icon="\uf110"
 //% groups=["Setup", "Tools", "PixelControl"]
 namespace SmartMatrix {
@@ -22,24 +29,38 @@ namespace SmartMatrix {
         strip: neopixel.Strip
         Width: number
         Height: number
-
+        /**
+         * Push all changes made to the framebuffer to the display
+         */
         //%blockId="Matrix_show" block="%matrix| show"
         //%weight=90 group="Tools"
         show(): void {
             this.strip.show();
         }
+        /**
+         * Set the brightness of the LEDs
+         * @param setpoint -the brightness setpoint, on a scale from 0-255
+         */
         //%blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
         //%weight=80 group="Setup"
         //%setpoint.defl=32
         Brightness(setpoint: number): void {
             this.strip.setBrightness(setpoint);
         }
+        /**
+         * Empty the entire framebuffer, a call to "show()" must be made to made changes visible
+         */
         //%blockId="Matrix_clear" block="clear %matrix"
         //%weight=80 group="Tools"
         clear(): void {
             this.strip.clear();
         }
-
+        /**
+         * Set a single pixel on the display to a specific colour
+         * @param x - the position on the x-axis (left is 0)
+         * @param y - the position on the y-axis (top is 0)
+         * @param colour - the colour to set the pixel to
+         */
         //%blockId="Matrix_setPixel" block="%matrix| set pixel at x %x| y %y| to colour %colour"
         //%weight=80 group="PixelControl"
         //%colour.shadow=neopixel_colors
@@ -49,7 +70,7 @@ namespace SmartMatrix {
             else { this.strip.setPixelColor((this.Height - y-1) + (x * this.Height), colour); } //While all odd rows are drawn bottom to top
         }
         /**
-         * scroll text on the matrix
+         * scroll a string of text on the matrix
          * @param text the text to scroll 
          * @param speed how fast the text should scroll
          * @param yoffset the y position for the text
@@ -71,43 +92,35 @@ namespace SmartMatrix {
                 this.strip.clear();
             }
         }
-                //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
+        /**
+         * draw a monochrome bitmap on the matrix
+         * a '1' will be set to the selected colour, a '0' will be ignored, allowing the bitmaps to be layered
+         * @param bitmap -the bitmap array to display
+         * @param x -the postition on the x-axis (left is 0)
+         * @param y -the position on the y-axis (top is 0)
+         * @param width -the width of the bitmap
+         * @param height -the height of the bitmap
+         * @param colour -the colour to display the bitmap in
+         * @param direction -set this to 0 to mirror the image
+         */
+        //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour" | draw direction &direction
         //%weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
-        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:number=1): void {
+        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
+            let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
             for(let Ypos=0; Ypos<height; Ypos++){
-                 for(let bitmask=0; bitmask<width; bitmask++){
-                     if(bitmap[Ypos] & 0x0001<<bitmask){
-                        if(direction){ 
-                           this.setPixel(x+width-bitmask, y+Ypos, colour)
-                        }
-                        else this.setPixel(x+bitmask, y+Ypos, colour)
-                     }
-                    }
-                }
-        }
-        /* OLD VERSION
-        //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour"
-        //%weight=70 group="PixelControl"
-        //% colour.shadow=neopixel.colors
-        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number): void {
-            for (let bitmask = 0; bitmask < width; bitmask++) {
-                if (!((x + bitmask) % 2)) {//Zigzag pixel string: if the row that's being drawn to (Xpos+bitmask) is odd, then draw from bottom to top
-                    for (let Ypos = height; Ypos >= 0; Ypos--) {
-                        if (bitmap[Ypos] & (0x80 >> bitmask)) { //draw the pixel when there is a "1" in the bitmap
-                            this.strip.setPixelColor(((x + bitmask) * this.Height) + Ypos + ((this.Height - 8) / 2), colour)
-                        }
-                    }
-                }
-                else {//else draw from top to bottom
-                    for (let Ypos = 0; Ypos < this.Height; Ypos++) {
-                        if (bitmap[7 - Ypos] & (0x80 >> bitmask)) {
-                            this.strip.setPixelColor(((x + bitmask) * this.Height + Ypos + ((this.Height - 8) / 2)), colour)
+                for(let hzScan=0; hzScan<byteInLine; hzScan++){
+                    for(let bitmask=0; bitmask<8; bitmask++){
+                        if(bitmap[(Ypos*byteInLine)+hzScan] & 0x01<<bitmask){
+                            if(direction){ 
+                                this.setPixel(x+width-bitmask, y+Ypos, colour)
+                            }
+                            else this.setPixel(x+bitmask, y+Ypos, colour)
                         }
                     }
                 }
             }
-        }*/
+        }
     }
 
     /**
@@ -130,7 +143,9 @@ namespace SmartMatrix {
 
         return matrix;
     }
-    //Take in a string-character and return a bitmap to draw on the display
+    /**
+     * Take in a string-character and return a bitmap to draw on the display
+     */
     export function getLettermap(char: string): number[] {
         let letterMap: number[] = [0, 0, 0, 0, 0, 0, 0, 0]
         let offset = ((char.charCodeAt(0)) - 32); //Convert the ASCII-Character to it's code to generate the offset in the font-array
