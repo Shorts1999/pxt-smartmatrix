@@ -32,8 +32,8 @@ namespace SmartMatrix {
         /**
          * Push all changes made to the framebuffer to the display
          */
-        //%blockId="Matrix_show" block="%matrix| show"
-        //%weight=90 group="Tools"
+        //% blockId="Matrix_show" block="%matrix| show"
+        //% weight=90 group="Tools"
         show(): void {
             this.strip.show();
         }
@@ -41,17 +41,17 @@ namespace SmartMatrix {
          * Set the brightness of the LEDs
          * @param setpoint -the brightness setpoint, on a scale from 0-255
          */
-        //%blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
-        //%weight=80 group="Setup"
-        //%setpoint.defl=32
+        //% blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
+        //% weight=80 group="Setup"
+        //% setpoint.defl=32
         Brightness(setpoint: number): void {
             this.strip.setBrightness(setpoint);
         }
         /**
          * Empty the entire framebuffer, a call to "show()" must be made to made changes visible
          */
-        //%blockId="Matrix_clear" block="clear %matrix"
-        //%weight=80 group="Tools"
+        //% blockId="Matrix_clear" block="clear %matrix"
+        //% weight=80 group="Tools"
         clear(): void {
             this.strip.clear();
         }
@@ -61,9 +61,9 @@ namespace SmartMatrix {
          * @param y - the position on the y-axis (top is 0)
          * @param colour - the colour to set the pixel to
          */
-        //%blockId="Matrix_setPixel" block="%matrix| set pixel at x %x| y %y| to colour %colour"
-        //%weight=80 group="PixelControl"
-        //%colour.shadow=neopixel_colors
+        //% blockId="Matrix_setPixel" block="%matrix| set pixel at x %x| y %y| to colour %colour"
+        //% weight=80 group="PixelControl"
+        //% colour.shadow=neopixel_colors
         setPixel(x: number, y: number, colour: number): void {
             if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
             if (!(x % 2)) { this.strip.setPixelColor(y + (x * this.Height), colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
@@ -76,10 +76,10 @@ namespace SmartMatrix {
          * @param yoffset the y position for the text
          * @param colour the colour in which the text will be displayed
          */
-        //%blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
-        //%weight=75 group="PixelControl"
-        //%colour.shadow=neopixel_colors
-        //%speed.min=1 speed.max=1024 speed.defl=512
+        //% blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
+        //% weight=75 group="PixelControl"
+        //% colour.shadow=neopixel_colors
+        //% speed.min=1 speed.max=1024 speed.defl=512
         scrollText(text: string, speed: number, yoffset:number, colour: number): void {
             this.strip.clear();
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
@@ -103,8 +103,8 @@ namespace SmartMatrix {
          * @param colour -the colour to display the bitmap in
          * @param direction -set this to 0 to mirror the image
          */
-        //%blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour" | draw direction &direction
-        //%weight=70 group="PixelControl"
+        //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour" | draw direction &direction
+        //% weight=70 group="PixelControl"
         //% colour.shadow=neopixel.colors
         drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
             let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
@@ -130,11 +130,11 @@ namespace SmartMatrix {
      * @param matrixHeight the amount of leds vertically
      * @param mode the format/type of the LED
      */
-    //%blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
-    //%weight=100 blockGap=8 group="Setup"
-    //%parts="SmartMatrix"
-    //%matrixWidth.defl=32 matrixHeight.defl=8
-    //%blockSetVariable=matrix
+    //% blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
+    //% weight=100 blockGap=8 group="Setup"
+    //% parts="SmartMatrix"
+    //% matrixWidth.defl=32 matrixHeight.defl=8
+    //% blockSetVariable=matrix
     export function create(pin: DigitalPin, matrixWidth: number, matrixHeight: number, mode: NeoPixelMode): Matrix {
         let matrix = new Matrix;
         matrix.strip = neopixel.create(pin, matrixHeight * matrixWidth, mode);
