@@ -123,7 +123,7 @@ namespace SmartMatrix {
                                 this.setPixel(x+(8*hzScan)-bitmask+7, y+Ypos, colour)
                             }
                             else{
-                                this.setPixel(width-(x-(8*hzScan)+bitmask), y+Ypos, colour)
+                                this.setPixel(width-(x+(8*hzScan)-bitmask+7)-1, y+Ypos, colour)
                             }
                         }
                     }
