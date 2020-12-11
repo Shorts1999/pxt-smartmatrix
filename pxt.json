@@ -1,6 +1,6 @@
 {
     "name": "pxt-smartmatrix",
-    "version": "1.0.3",
+    "version": "1.0.4",
     "description": "An extension for controlling Neopixel LED matrices",
     "dependencies": {
         "core": "*",
