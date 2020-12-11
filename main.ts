@@ -1,5 +1,5 @@
 /**
- * Micro:Bit makeCode extension for neopixel.was2812b matrices
+ * Micro:Bit makeCode extension for neopixel/ws2812b matrices
  * 
  * 
  */
@@ -11,7 +11,6 @@
 //June 2020                                     //
 //                                              //
 //**********************************************//
-
 enum drawDirection{
     //% block="Normal"
     normal=1,
@@ -21,6 +20,7 @@ enum drawDirection{
 
 //% weight=6 color=#00CC60 icon="\uf110"
 namespace SmartMatrix {
+
     /**
      * A Matrix made of ws2812b LEDs
      */
@@ -41,7 +41,7 @@ namespace SmartMatrix {
          * Set the brightness of the LEDs
          * @param setpoint -the brightness setpoint, on a scale from 0-255
          */
-        //% blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
+        //% blockId="Matrix_Brightness" block="%matrix set brightness to %setpoint"
         //% weight=80
         //% setpoint.defl=32
         //% blockGap=8 parts="SmartMatrix"
@@ -89,7 +89,7 @@ namespace SmartMatrix {
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
                 for (let letter = 0; letter < text.length; letter++) {//for loop to retrieve all the letters from te text
                     let bitmap = getLettermap(text.charAt(letter))
-                    this.drawBitmap(bitmap, Xpos + (6 * letter), yoffset, 7, 8, colour)
+                    this.drawBitmap(bitmap, Xpos + (6 * letter), yoffset, 7, 8, colour, drawDirection.normal)
                 }
                 this.strip.show();
                 basic.pause(2000 / speed);
@@ -107,11 +107,13 @@ namespace SmartMatrix {
          * @param colour -the colour to display the bitmap in
          * @param direction -set this to 0 to mirror the image
          */
-        //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour | draw direction &direction"
-        //% weight=70
-        //% colour.shadow=neopixel.colors
-        //% blockGap=8 parts="SmartMatrix"
-        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
+        //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y | with width %width height %height in colour %colour | draw direction %direction"
+        //% weight=100
+        //% x.defl=0 y.defl=0 width.defl=8 height.defl=8
+        //% colour.shadow=neopixel_colors
+        //% advanced=true
+        //% direction.shadow="drawDirection"
+        drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection): void {
             let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
             for(let Ypos=0; Ypos<height; Ypos++){
                 for(let hzScan=0; hzScan<byteInLine; hzScan++){
@@ -120,7 +122,9 @@ namespace SmartMatrix {
                             if(direction){ 
                                 this.setPixel(x+width-bitmask, y+Ypos, colour)
                             }
-                            else this.setPixel(x+bitmask, y+Ypos, colour)
+                            else{
+                                this.setPixel(x+bitmask, y+Ypos, colour)
+                            }
                         }
                     }
                 }
@@ -162,7 +166,7 @@ namespace SmartMatrix {
         }
         return letterMap;
     }
-}
+
 const font8x3 = hex`
     0000000000000000 1038381010001000 6C6C480000000000 00287C28287C2800
     2038403008701000 64640810204C4C00 2050502054483400 3030200000000000
@@ -188,3 +192,4 @@ const font8x3 = hex`
     0020782020281000 0000484848582800 0000444444281000 00004444547C2800
     0000484830484800 0000484848381060 0000780830407800 1820206020201800
     1010100010101000 3008080C08083000 2850000000000000`;
+}
