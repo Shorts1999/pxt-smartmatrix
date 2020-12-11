@@ -33,6 +33,7 @@ namespace SmartMatrix {
          */
         //% blockId="Matrix_show" block="%matrix| show"
         //% weight=90
+        //% blockGap=8 parts="SmartMatrix"
         show(): void {
             this.strip.show();
         }
@@ -43,7 +44,7 @@ namespace SmartMatrix {
         //% blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
         //% weight=80
         //% setpoint.defl=32
-        //% BlockGap=8 parts="SmartMatrix"
+        //% blockGap=8 parts="SmartMatrix"
         Brightness(setpoint: number): void {
             this.strip.setBrightness(setpoint);
         }
@@ -52,7 +53,7 @@ namespace SmartMatrix {
          */
         //% blockId="Matrix_clear" block="clear %matrix"
         //% weight=80
-        //% BlockGap=8 parts="SmartMatrix"
+        //% blockGap=8 parts="SmartMatrix"
         clear(): void {
             this.strip.clear();
         }
@@ -65,7 +66,7 @@ namespace SmartMatrix {
         //% blockId="Matrix_setPixel" block="%matrix| set pixel at x %x| y %y| to colour %colour"
         //% weight=80
         //% colour.shadow=neopixel_colors
-        //% BlockGap=8 parts="SmartMatrix"
+        //% blockGap=8 parts="SmartMatrix"
         setPixel(x: number, y: number, colour: number): void {
             if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
             if (!(x % 2)) { this.strip.setPixelColor(y + (x * this.Height), colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
@@ -82,7 +83,7 @@ namespace SmartMatrix {
         //% weight=75
         //% colour.shadow=neopixel_colors
         //% speed.min=1 speed.max=1024 speed.defl=512
-        //% BlockGap=8 parts="SmartMatrix"
+        //% blockGap=8 parts="SmartMatrix"
         scrollText(text: string, speed: number, yoffset:number, colour: number): void {
             this.strip.clear();
             for (let Xpos = this.Width; Xpos > -6 * text.length; Xpos--) {//for loop to scroll across the entire matrix
@@ -109,7 +110,7 @@ namespace SmartMatrix {
         //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour | draw direction &direction"
         //% weight=70
         //% colour.shadow=neopixel.colors
-        //% BlockGap=8 parts="SmartMatrix"
+        //% blockGap=8 parts="SmartMatrix"
         drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
             let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
             for(let Ypos=0; Ypos<height; Ypos++){
@@ -138,7 +139,7 @@ namespace SmartMatrix {
     //% weight=100
     //% matrixWidth.defl=32 matrixHeight.defl=8
     //% blockSetVariable=matrix
-    //% BlockGap=8 parts="SmartMatrix"
+    //% blockGap=8 parts="SmartMatrix"
     export function create(pin: DigitalPin, matrixWidth: number, matrixHeight: number, mode: NeoPixelMode): Matrix {
         let matrix = new Matrix;
         matrix.strip = neopixel.create(pin, matrixHeight * matrixWidth, mode);
