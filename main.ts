@@ -20,7 +20,6 @@ enum drawDirection{
 }
 
 //% weight=6 color=#00CC60 icon="\uf110"
-//% groups=["Setup", "Tools", "PixelControl"]
 namespace SmartMatrix {
     /**
      * A Matrix made of ws2812b LEDs
@@ -33,7 +32,7 @@ namespace SmartMatrix {
          * Push all changes made to the framebuffer to the display
          */
         //% blockId="Matrix_show" block="%matrix| show"
-        //% weight=90 group="Tools"
+        //% weight=90
         show(): void {
             this.strip.show();
         }
@@ -42,7 +41,7 @@ namespace SmartMatrix {
          * @param setpoint -the brightness setpoint, on a scale from 0-255
          */
         //% blockId="Matrix_Brighness" block="%matrix set brightness to %setpoint"
-        //% weight=80 group="Setup"
+        //% weight=80
         //% setpoint.defl=32
         Brightness(setpoint: number): void {
             this.strip.setBrightness(setpoint);
@@ -51,7 +50,7 @@ namespace SmartMatrix {
          * Empty the entire framebuffer, a call to "show()" must be made to made changes visible
          */
         //% blockId="Matrix_clear" block="clear %matrix"
-        //% weight=80 group="Tools"
+        //% weight=80
         clear(): void {
             this.strip.clear();
         }
@@ -62,7 +61,7 @@ namespace SmartMatrix {
          * @param colour - the colour to set the pixel to
          */
         //% blockId="Matrix_setPixel" block="%matrix| set pixel at x %x| y %y| to colour %colour"
-        //% weight=80 group="PixelControl"
+        //% weight=80
         //% colour.shadow=neopixel_colors
         setPixel(x: number, y: number, colour: number): void {
             if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
@@ -77,7 +76,7 @@ namespace SmartMatrix {
          * @param colour the colour in which the text will be displayed
          */
         //% blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
-        //% weight=75 group="PixelControl"
+        //% weight=75
         //% colour.shadow=neopixel_colors
         //% speed.min=1 speed.max=1024 speed.defl=512
         scrollText(text: string, speed: number, yoffset:number, colour: number): void {
@@ -104,7 +103,7 @@ namespace SmartMatrix {
          * @param direction -set this to 0 to mirror the image
          */
         //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour" | draw direction &direction
-        //% weight=70 group="PixelControl"
+        //% weight=70
         //% colour.shadow=neopixel.colors
         drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
             let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
@@ -131,7 +130,7 @@ namespace SmartMatrix {
      * @param mode the format/type of the LED
      */
     //% blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
-    //% weight=100 blockGap=8 group="Setup"
+    //% weight=100
     //% parts="SmartMatrix"
     //% matrixWidth.defl=32 matrixHeight.defl=8
     //% blockSetVariable=matrix
