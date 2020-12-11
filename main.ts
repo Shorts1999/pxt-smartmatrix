@@ -70,7 +70,7 @@ namespace SmartMatrix {
         setPixel(x: number, y: number, colour: number): void {
             if (x < 0 || x > this.Width || y < 0 || y > this.Height) { return } //If the pixel does not fit on screen, do not draw it (to avoid aliasing)
             if (!(x % 2)) { this.strip.setPixelColor(y + (x * this.Height), colour); } //Because of the zig-zag formation of the panel all even rows (including 0) are drawn top to bottom
-            else { this.strip.setPixelColor((this.Height - y-1) + (x * this.Height), colour); } //While all odd rows are drawn bottom to top
+            else { this.strip.setPixelColor((this.Height - y) + (x * this.Height), colour); } //While all odd rows are drawn bottom to top
         }
         /**
          * scroll a string of text on the matrix
@@ -82,7 +82,7 @@ namespace SmartMatrix {
         //% blockId="Matrix_scrollText" block="%matrix scroll text %text| with speed %speed| on Y postition %yoffset| and colour %colour"
         //% weight=75
         //% colour.shadow=neopixel_colors
-        //% speed.min=1 speed.max=1024 speed.defl=512
+        //% speed.min=1 speed.max=2000 speed.defl=1200
         //% blockGap=8 parts="SmartMatrix"
         scrollText(text: string, speed: number, yoffset:number, colour: number): void {
             this.strip.clear();
@@ -114,16 +114,16 @@ namespace SmartMatrix {
         //% advanced=true
         //% direction.shadow="drawDirection"
         drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection): void {
-            let byteInLine = (width+7)/8 //The amount of bytes per horizontal line in the bitmap
+            let byteInLine = ((width+7)/8) //The amount of bytes per horizontal line in the bitmap
             for(let Ypos=0; Ypos<height; Ypos++){
                 for(let hzScan=0; hzScan<byteInLine; hzScan++){
                     for(let bitmask=0; bitmask<8; bitmask++){
                         if(bitmap[(Ypos*byteInLine)+hzScan] & 0x01<<bitmask){
                             if(direction){ 
-                                this.setPixel(x+width-bitmask, y+Ypos, colour)
+                                this.setPixel(x+hzScan-bitmask+8, y+Ypos, colour)
                             }
                             else{
-                                this.setPixel(x+bitmask, y+Ypos, colour)
+                                this.setPixel(x-hzScan+bitmask, y+Ypos, colour)
                             }
                         }
                     }
@@ -161,13 +161,13 @@ namespace SmartMatrix {
         if (offset >= 0) {
             for (let i = 0; i < 8; i++) {
                 //Every character has 8 arguments in the array, so multiply the offset by 8, and then take ne next 8 arguments as the value for the correct bitmap.
-                letterMap[i] = font8x3.getNumber(NumberFormat.UInt8BE, ((offset * 8) + i))
+                letterMap[i] = font8x6.getNumber(NumberFormat.UInt8BE, ((offset * 8) + i))
             }
         }
         return letterMap;
     }
 }
-const font8x3 = hex`
+const font8x6 = hex`
     0000000000000000 1038381010001000 6C6C480000000000 00287C28287C2800
     2038403008701000 64640810204C4C00 2050502054483400 3030200000000000
     1020202020201000 2010101010102000 0028387C38280000 0010107C10100000
