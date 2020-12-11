@@ -5,8 +5,7 @@
     "dependencies": {
         "core": "*",
         "radio": "*",
-        "neopixel": "github:microsoft/pxt-neopixel#v0.6.12",
-        "microphone": "*"
+        "neopixel": "github:microsoft/pxt-neopixel#v0.6.12"
     },
     "files": [
         "README.md",
@@ -16,8 +15,5 @@
         "test.ts"
     ],
     "public": false,
-    "supportedTargets": [
-        "microbit"
-    ],
     "preferredEditor": "tsprj"
 }
