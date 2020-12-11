@@ -13,9 +13,9 @@
 //**********************************************//
 
 enum drawDirection{
-    //% block=Normal
+    //% block="Normal"
     normal=1,
-    //% block=Mirrored
+    //% block="Mirrored"
     mirrored=0
 }
 
@@ -102,7 +102,7 @@ namespace SmartMatrix {
          * @param colour -the colour to display the bitmap in
          * @param direction -set this to 0 to mirror the image
          */
-        //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour" | draw direction &direction
+        //% blockId="Matrix_drawBitmap" block="%matrix draw bitmap %bitmap at x %x y %y| with width %width height %height in colour %colour | draw direction &direction"
         //% weight=70
         //% colour.shadow=neopixel.colors
         drawBitmap(bitmap: number[], x: number, y: number, width: number, height: number, colour: number, direction:drawDirection=drawDirection.normal): void {
@@ -131,7 +131,6 @@ namespace SmartMatrix {
      */
     //% blockId="Matrix_Create" block="Matrix at pin %pin|with a width of %matrixWidth|height of %matrixheight| and with %mode pixeltype"
     //% weight=100
-    //% parts="SmartMatrix"
     //% matrixWidth.defl=32 matrixHeight.defl=8
     //% blockSetVariable=matrix
     export function create(pin: DigitalPin, matrixWidth: number, matrixHeight: number, mode: NeoPixelMode): Matrix {
