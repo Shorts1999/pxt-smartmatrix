@@ -28,9 +28,9 @@ This function allows for drawing a monochrome bitmap on the display. it can be p
 
 Scroll Text (matrix.scrollText(text, speed, Y offset, colour) allows you to scroll a string of text across the matrix. this uses a 6x8 font, so every letter is 8 pixels tall and six pixels wide. the speed variable determines how fast it scrolls across the screen and the Y offset places it up or down on the screen.
 
-#To do:
-*Drawing graphics primitives like lines, squares and circles
-*support for other display types (non-zigzag, different start pixel positions etc)
+### To do: 
+  * Drawing graphics primitives like lines, squares and circles
+  * support for other display types (non-zigzag, different start pixel positions etc)
 
 ## TODO
 
