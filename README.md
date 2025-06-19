@@ -2,8 +2,8 @@
 
 ## Micro:Bit SmartMatrix
 
-This extensions allows you to easily control LED matrices/displays made from ws2812b/NeoPixel controllable RGB LEDs
-There are a multitude of added cuntions, like drawing pixels in a x/y coördinante system, scrolling text over the display and drawing monochrome images.
+This extensions allows you to easily control LED displays made from ws2812b/NeoPixel controllable RGB LEDs
+There are a multitude of added functions, like drawing pixels in a x/y coordinante system, scrolling text over the display and drawing monochrome images.
 
 IMPORTANT NOTE:
 The extension only works with matrices made in a "column-zigzag pattern" meaning the matrix is made of strips in a zig-zag pattern going up and down.
