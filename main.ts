@@ -97,6 +97,24 @@ namespace SmartMatrix {
             }
         }
         /**
+         * Display static text
+         * @param text - the text to Display
+         * @param x - the x-position to start the text
+         * @param y - the y-position to start the text
+         * @param colour - the colour to display the text in
+         */
+        //% blockId="Matrix_text" block="%matrix display %text| at position x %x y %y | with colour %colour"
+        //% weight = 74
+        //% colour.shadow=neopixel_colors
+        //% blockGap=8 parts="SmartMatrix"
+        text(text:string,x:number, y:number, colour:number):void{
+            for (let letter = 0; letter < text.length; letter++) {//for loop to retrieve all the letters from te text
+                let bitmap = getLettermap(text.charAt(letter));
+                this.drawBitmap(bitmap, x + (6 * letter), y, 7, 8, colour, drawDirection.normal);
+            }
+            this.strip.show(); //Should this be included in the function?
+        }
+        /**
          * draw a monochrome bitmap on the matrix
          * a '1' will be set to the selected colour, a '0' will be ignored, allowing the bitmaps to be layered
          * @param bitmap -the bitmap array to display
